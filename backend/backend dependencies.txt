@@ -1,0 +1,15 @@
+
+
+npm init -y
+
+
+npm i express cors nodemon mongoose mongodb dotenv
+
+
+npm install ts-node nodemon typescript @types/express @types/cors @types/node --sasve-dev
+
+
+npx tsc --init
+
+
+npx shadcn@latest init
