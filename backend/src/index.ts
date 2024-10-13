@@ -3,6 +3,8 @@ import cors from 'cors';
 import 'dotenv/config'
 import mongoose from 'mongoose';
 
+import userRoute from './routes/userRoute';
+
 const app = express();
 
 app.use(cors());
@@ -14,11 +16,8 @@ mongoose.connect(process.env.MONGODB_URL as string).then(() => {
 
 })
 
-app.get('/test', async (req: Request, res: Response) => { // Removed the space here
-    res.json({
-        message: 'API is working'
-    });
-});
+
+app.use('/api/my/user', userRoute)
 
 app.listen(5000, () => {
     console.log('Server is running on port 5000');

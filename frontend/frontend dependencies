@@ -11,3 +11,12 @@ npx tailwindcss init -p
 
 
 npm i -D @types/node
+
+
+npm i react-query
+npx shadcn@latest add sheet
+npx shadcn-ui add dropdown-menu
+npx shadcn@latest add dropdown-menu
+npx shadcn@latest add form 
+npx shadcn@latest add input
+npm i zod
