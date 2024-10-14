@@ -1,5 +1,4 @@
-import { useCreateMyUser } from "@/api/userApi";
-import { AppState, Auth0Provider, useAuth0, User } from "@auth0/auth0-react";
+import { AppState, Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -9,7 +8,7 @@ type Props = {
 const Auth0ProviderWithNavigate = ({ children }: Props) => {
 
 
-    const { createUser } = useCreateMyUser()
+  
 
     const navigate = useNavigate();
 

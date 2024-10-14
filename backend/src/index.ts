@@ -7,13 +7,25 @@ import userRoute from './routes/userRoute';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: ['https://mern-food-app-frontend-u8fs.onrender.com', 'http://localhost:5173'], // Replace with your actual frontend URL
+    credentials: true,
+}));
 app.use(express.json());
+
+
+
 
 
 mongoose.connect(process.env.MONGODB_URL as string).then(() => {
     console.log('Connected to MongoDB');
 
+})
+
+
+app.get('/health', async (req: Request, res: Response) => {
+
+    res.send({message:"Health ok!"})
 })
 
 

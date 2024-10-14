@@ -1,3 +1,4 @@
+import ProtectedRoute from '@/auth/ProtectedRoutes'
 import Layout from '@/layouts/layout'
 import AuthCallbackPage from '@/pages/AuthCallbackPage'
 import HomePage from '@/pages/HomePage'
@@ -9,10 +10,13 @@ const AppRoutes = () => {
         <>
             <Routes>
                 <Route path='/' element={<Layout showHero={true}><HomePage /></Layout>} />
+                
                 <Route path='/auth-callback' element={<AuthCallbackPage />} />
 
-                <Route path='/user-profile' element={<Layout showHero={false}><UserProfilePage /></Layout>} />
+                <Route element={<ProtectedRoute />}>
+                    <Route path='/user-profile' element={<Layout showHero={false}><UserProfilePage /></Layout>} />
 
+                </Route>
                 <Route path='*' element={<Navigate to='/' />} />
 
             </Routes>

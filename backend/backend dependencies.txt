@@ -24,3 +24,7 @@ npm i jsonwebtoken
 npm i @types/jsonwebtoken --save-dev
 
 npm i express-validator
+
+tsconfig.json <== add  this line to your config
+
+"outDir": "./dist",
