@@ -4,6 +4,17 @@ import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 
 
+
+const uploadImage = async (file: Express.Multer.File) => {
+
+    const image = file;
+    const base64Image = Buffer.from(image.buffer).toString("base64");
+    const dataURI = `data:${image.mimetype};base64,${base64Image}`;
+    const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+    return uploadResponse.url;
+
+}
+
 export const createMyRestaurant = async (req: Request, res: Response): Promise<any> => {
 
     try {
@@ -16,14 +27,11 @@ export const createMyRestaurant = async (req: Request, res: Response): Promise<a
             });
         }
 
-        const image = req.file as Express.Multer.File;
-        const base64Image = Buffer.from(image.buffer).toString("base64");
-        const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-        const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+        const imageUrl = await uploadImage(req.file as Express.Multer.File)
 
         const restaurant = new Restaurant(req.body);
 
-        restaurant.imageUrl = uploadResponse.url;
+        restaurant.imageUrl = imageUrl;
 
         restaurant.lastUpdated = new Date()
 
@@ -45,3 +53,87 @@ export const createMyRestaurant = async (req: Request, res: Response): Promise<a
 
 
 }
+
+
+
+
+
+export const updateMyRestaurant = async (req: Request, res: Response): Promise<any> => {
+
+    try {
+
+        const restaurant = await Restaurant.findOne
+            ({ user: req.userId })
+
+        if (!restaurant) {
+            return res.status(404).json({
+                message: 'Restaurant not found',
+            });
+        }
+
+
+        restaurant.restaurantName = req.body.restaurantName;
+        restaurant.city = req.body.city;
+        restaurant.country = req.body.country;
+        restaurant.deliveryPrice = req.body.deliveryPrice;
+        restaurant.estimatedDeliveryTime = req.body.estimatedDeliveryTime;
+        restaurant.cuisines = req.body.cuisines;
+        restaurant.menuItems = req.body.menuItems;
+        restaurant.lastUpdated = new Date();
+
+        if (req.file) {
+
+            const imageUrl = await uploadImage(req.file as Express.Multer.File)
+            restaurant.imageUrl = imageUrl;
+
+        }
+
+        await restaurant.save();
+
+        res.status(200).send(restaurant)
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Something went wrong',
+        });
+
+    }
+
+
+}
+
+
+
+export const getMyRestaurant = async (req: Request, res: Response): Promise<any> => {
+
+    try {
+
+        const restaurant = await Restaurant.findOne({ user: req.userId })
+
+        if (!restaurant) {
+            return res.status(404).json({
+                message: 'You have not a restaurant',
+            });
+        }
+
+
+        res.status(201).json(restaurant);
+
+
+
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Error fetching restaurant',
+        });
+
+    }
+
+
+
+
+}
+
