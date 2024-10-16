@@ -28,3 +28,15 @@ npm i express-validator
 tsconfig.json <== add  this line to your config
 
 "outDir": "./dist",
+
+Add In Json.file <== add this your packaa.json 
+
+"build": "npm install && npx tsc",
+"start": "node dist/index.js"
+
+npm run build
+
+npm i cloudinary
+npm i multer
+
+npm i @types/multer 
